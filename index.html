@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy 21st Birthday, Teju!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #ffd1e3 0%, #fff5e1 100%);
+        overflow-x: hidden;
+      }
+      .font-playfair {
+        font-family: "Playfair Display", serif;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Simple Confetti Animation */
+      .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 9999;
+      }
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 16px;
+        background: #f00;
+        opacity: 0;
+        animation: fall 5s linear infinite;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 1;
+        }
+      }
+
+      /* Photo Flipper Styles */
+      .photo-container {
+        perspective: 1000px;
+        aspect-ratio: 1 / 1;
+      }
+      .photo-flipper {
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .photo-container:hover .photo-flipper {
+        transform: rotateY(180deg);
+      }
+      .photo-flipper.flipped {
+        transform: rotateY(180deg);
+      }
+      .photo-front,
+      .photo-back {
+        backface-visibility: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .photo-back {
+        transform: rotateY(180deg);
+      }
+
+      /* Envelope Styles */
+      #envelope-container {
+        transition: opacity 0.8s ease-in-out 0.5s; /* Fade out after flap animation */
+      }
+      #flap {
+        transition: transform 0.6s ease-in-out;
+        transform-origin: top;
+      }
+      #page-content {
+        transition: opacity 0.8s ease-in-out 0.7s; /* Fade in as envelope fades out */
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <!-- The Envelope that covers the page -->
+    <div
+      id="envelope-container"
+      class="fixed inset-0 bg-pink-100/50 backdrop-blur-sm flex items-center justify-center z-[10000] cursor-pointer"
+    >
+      <div class="relative w-[320px] h-[210px] md:w-[400px] md:h-[260px]">
+        <!-- Back of the envelope -->
+        <div class="absolute inset-0 bg-pink-300 rounded-lg shadow-2xl"></div>
+        <!-- The flap -->
+        <div
+          id="flap"
+          class="absolute inset-x-0 top-0 h-1/2 bg-pink-400"
+          style="clip-path: polygon(0 0, 100% 0, 50% 100%)"
+        ></div>
+        <!-- The open message -->
+        <div
+          id="open-text"
+          class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-300"
+        >
+          <svg
+            class="w-12 h-12 text-white/80 mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            ></path>
+          </svg>
+          <span
+            class="font-playfair text-xl text-white"
+            style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2)"
+            >A special message for Teju</span
+          >
+          <span class="text-sm text-white/80 mt-1">Click to open</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Actual Page Content -->
+    <main id="page-content" class="opacity-0">
+      <div class="confetti-container" id="confetti-container"></div>
+
+      <div class="container mx-auto px-4 py-8 md:py-16">
+        <!-- Header Section -->
+        <header class="text-center mb-12 md:mb-16">
+          <h1
+            class="font-playfair text-5xl md:text-7xl font-bold"
+            style="color: #c7386f"
+          >
+            Happy 21st Birthday, Teju!
+          </h1>
+          <p class="mt-4 text-lg md:text-xl text-gray-600">
+            A special day for a truly special person.
+          </p>
+        </header>
+
+        <!-- Countdown Timer -->
+        <section id="countdown-section" class="mb-12 md:mb-16">
+          <div
+            class="card max-w-3xl mx-auto rounded-2xl p-6 md:p-10 shadow-lg text-center"
+          >
+            <h2
+              class="font-playfair text-3xl md:text-4xl font-bold mb-6"
+              style="color: #d64550"
+            >
+              The Celebration Begins In...
+            </h2>
+            <div
+              id="countdown-timer"
+              class="flex justify-center space-x-2 md:space-x-6"
+            >
+              <div>
+                <span id="days" class="block text-4xl md:text-6xl font-bold"
+                  >0</span
+                >
+                <span class="text-sm md:text-base text-gray-500">Days</span>
+              </div>
+              <div>
+                <span id="hours" class="block text-4xl md:text-6xl font-bold"
+                  >0</span
+                >
+                <span class="text-sm md:text-base text-gray-500">Hours</span>
+              </div>
+              <div>
+                <span id="minutes" class="block text-4xl md:text-6xl font-bold"
+                  >0</span
+                >
+                <span class="text-sm md:text-base text-gray-500">Minutes</span>
+              </div>
+              <div>
+                <span id="seconds" class="block text-4xl md:text-6xl font-bold"
+                  >0</span
+                >
+                <span class="text-sm md:text-base text-gray-500">Seconds</span>
+              </div>
+            </div>
+            <div
+              id="birthday-message"
+              class="hidden font-playfair text-4xl font-bold mt-6"
+              style="color: #c7386f"
+            >
+              The wait is over! Happy Birthday, Teju! 🥳
+            </div>
+          </div>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section id="photo-gallery" class="mb-12 md:mb-16">
+          <div class="card max-w-6xl mx-auto rounded-2xl p-6 md:p-10 shadow-lg">
+            <h2
+              class="font-playfair text-3xl md:text-4xl font-bold mb-8 text-center"
+              style="color: #d64550"
+            >
+              A Few Memories
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Photo 1 -->
+              <div class="photo-container rounded-2xl shadow-lg">
+                <div class="photo-flipper relative w-full h-full">
+                  <div
+                    class="photo-front rounded-2xl flex items-center justify-center bg-pink-100"
+                  >
+                    <span class="font-playfair text-4xl" style="color: #c7386f"
+                      >Teju</span
+                    >
+                  </div>
+                  <div class="photo-back rounded-2xl overflow-hidden">
+                    <img
+                      src="teju.jpg"
+                      alt="A photo of Teju"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Photo 2 -->
+              <div class="photo-container rounded-2xl shadow-lg">
+                <div class="photo-flipper relative w-full h-full">
+                  <div
+                    class="photo-front rounded-2xl flex items-center justify-center"
+                    style="background-color: #fff5e1"
+                  >
+                    <span class="font-playfair text-4xl" style="color: #d64550"
+                      >21</span
+                    >
+                  </div>
+                  <div class="photo-back rounded-2xl overflow-hidden">
+                    <img
+                      src="teju2.jpg"
+                      alt="Another photo of Teju"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Photo 3 -->
+              <div class="photo-container rounded-2xl shadow-lg">
+                <div class="photo-flipper relative w-full h-full">
+                  <div
+                    class="photo-front rounded-2xl flex items-center justify-center bg-pink-100"
+                  >
+                    <span class="font-playfair text-4xl" style="color: #c7386f"
+                      >Birthday</span
+                    >
+                  </div>
+                  <div class="photo-back rounded-2xl overflow-hidden">
+                    <img
+                      src="teju3.jpg"
+                      alt="A third photo of Teju"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- A Personal Note -->
+        <section id="personal-note" class="mb-12 md:mb-16">
+          <div
+            id="note-card"
+            class="card max-w-3xl mx-auto rounded-2xl p-6 md:p-10 shadow-lg text-center relative overflow-hidden"
+          >
+            <div class="note-content">
+              <h2
+                class="font-playfair text-3xl md:text-4xl font-bold mb-4"
+                style="color: #d64550"
+              >
+                A Note For You
+              </h2>
+              <div
+                class="text-gray-700 leading-relaxed text-lg text-left md:text-center px-4"
+              >
+                <p>
+                  Teju, today is all about you and the beautiful journey you've
+                  had so far.
+                </p>
+                <p class="mt-4">
+                  I hope this day brings you all the smiles and peace you truly
+                  deserve.
+                </p>
+                <p class="mt-4">
+                  I know trust takes time, and I want you to know — I'm not here
+                  just for a moment. I'll be here through whatever comes.
+                </p>
+                <p class="mt-6 font-semibold">
+                  Here's to you and this beautiful new chapter at 21 ✨
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500">
+          <p>Made for Teju's 21st Birthday.</p>
+          <p>&copy; 2025. All wishes reserved.</p>
+        </footer>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const envelopeContainer = document.getElementById("envelope-container");
+        const pageContent = document.getElementById("page-content");
+        const flap = document.getElementById("flap");
+        const openText = document.getElementById("open-text");
+
+        function openEnvelope() {
+          envelopeContainer.removeEventListener("click", openEnvelope);
+          openText.style.opacity = "0";
+          flap.style.transform = "rotateX(180deg)";
+          envelopeContainer.style.opacity = "0";
+          pageContent.style.opacity = "1";
+          setTimeout(() => {
+            envelopeContainer.style.display = "none";
+          }, 1500);
+        }
+        envelopeContainer.addEventListener("click", openEnvelope);
+
+        let isBirthday = false;
+
+        function onBirthdayStart() {
+          if (isBirthday) return;
+          isBirthday = true;
+          createConfetti();
+        }
+
+        // --- Photo Flipper ---
+        const flippers = document.querySelectorAll(".photo-flipper");
+        setInterval(() => {
+          flippers.forEach((flipper) => {
+            flipper.classList.toggle("flipped");
+          });
+        }, 3000); // Flip every 3 seconds
+
+        // --- Confetti ---
+        const confettiContainer = document.getElementById("confetti-container");
+        const confettiCount = 100;
+        const colors = [
+          "#f44336",
+          "#e91e63",
+          "#9c27b0",
+          "#673ab7",
+          "#3f51b5",
+          "#2196f3",
+          "#03a9f4",
+          "#00bcd4",
+          "#009688",
+          "#4caf50",
+          "#8bc34a",
+          "#cddc39",
+          "#ffeb3b",
+          "#ffc107",
+          "#ff9800",
+          "#ff5722",
+        ];
+
+        function createConfetti() {
+          for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+            confetti.style.left = `${Math.random() * 100}vw`;
+            confetti.style.top = `${Math.random() * -100}vh`;
+            confetti.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = `${Math.random() * 5}s`;
+            confetti.style.animationDuration = `${3 + Math.random() * 2}s`;
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confettiContainer.appendChild(confetti);
+          }
+        }
+
+        // --- Countdown Timer ---
+        const birthday = new Date("October 16, 2025 00:00:00").getTime();
+
+        const countdownFunction = setInterval(function () {
+          const now = new Date().getTime();
+          const distance = birthday - now;
+
+          if (distance < 0) {
+            clearInterval(countdownFunction);
+            document.getElementById("countdown-timer").classList.add("hidden");
+            document
+              .getElementById("birthday-message")
+              .classList.remove("hidden");
+            document
+              .getElementById("countdown-section")
+              .classList.add("animate-pulse");
+            onBirthdayStart();
+            return;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("days").innerText = days;
+          document.getElementById("hours").innerText = hours;
+          document.getElementById("minutes").innerText = minutes;
+          document.getElementById("seconds").innerText = seconds;
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
